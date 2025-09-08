@@ -107,50 +107,60 @@ export default function Footer() {
               </a>
             </Stack>
 
-            <Stack
-              direction="row"
-              gap={1}
-              alignItems="center"
-              flexWrap="nowrap"
-            >
-              <PhoneIcon sx={{ color: "var(--secondary)" }} />
-
-              <p
-                onClick={handlePhoneCallOne}
-                style={{
-                  cursor: "pointer",
-                  display: "inline",
-                  whiteSpace: "nowrap",
-                }}
+            <Stack direction="row" gap={1} alignItems="flex-start">
+              <PhoneIcon sx={{ color: "var(--secondary)", mt: "4px" }} />
+              <Stack
+                direction="row"
+                flexWrap="wrap"
+                columnGap={1}
+                rowGap={0}
+                alignItems="center"
               >
-                +91 88387 80610
-              </p>
+                {/* Grouping the first two numbers to keep them together */}
+                <Stack
+                  direction="row"
+                  gap={1}
+                  alignItems="center"
+                  sx={{ whiteSpace: "nowrap" }}
+                >
+                  <p
+                    onClick={handlePhoneCallOne}
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  >
+                    +91 88387 80610
+                  </p>
+                  <span>|</span>
+                  <p
+                    onClick={handlePhoneCallTwo}
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  >
+                    +91 93447 46894
+                  </p>
+                </Stack>
 
-              <span>|</span>
+                {/* This separator only shows on medium screens and up */}
+                <Typography
+                  component="span"
+                  sx={{ display: { xs: "none", md: "inline" } }}
+                >
+                  |
+                </Typography>
 
-              <p
-                onClick={handlePhoneCallTwo}
-                style={{
-                  cursor: "pointer",
-                  display: "inline",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                +91 93447 46894
-              </p>
-
-              <span>|</span>
-
-              <p
-                onClick={handlePhoneCallThree}
-                style={{
-                  cursor: "pointer",
-                  display: "inline",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                +91  88709 73131 
-              </p>
+                {/* The third number, which will wrap to the next line on xs screens */}
+                <p
+                  onClick={handlePhoneCallThree}
+                  style={{
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  +91 88709 73131
+                </p>
+              </Stack>
             </Stack>
           </Stack>
 
