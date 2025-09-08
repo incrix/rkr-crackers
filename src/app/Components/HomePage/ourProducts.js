@@ -12,7 +12,7 @@ export default function OurProducts() {
   const [productList, setProductList] = useState([]);
   const router = useRouter();
   useEffect(() => {
-    fetch("https://e-com.incrix.com/Sankamithra%20Products/productData.json")
+    fetch("https://e-com.incrix.com/RKR%20Crackers/productData.json")
       .then((response) => response.json())
       .then((data) => {
         data.sort((a, b) => a.sort_id - b.sort_id);

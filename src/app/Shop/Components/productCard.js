@@ -140,7 +140,7 @@ export default function ProductCard({ product }) {
         )}
         <Stack>
           <Image
-            src={`https://e-com.incrix.com/Sankamithra%20Products/${product.image[0]}`}
+            src={`https://e-com.incrix.com/RKR%20Crackers/${product.image[0]}`}
             alt={product.name || "Product image"} // Use a descriptive alt text
             width={100} // Set explicit width (adjust based on your design)
             height={100} // Set explicit height (adjust based on your design)

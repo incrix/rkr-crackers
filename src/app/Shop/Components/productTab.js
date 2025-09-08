@@ -9,7 +9,7 @@ export default function ProductTab({ category }) {
 
   // 🔹 1. Fetch data only once
   useEffect(() => {
-    fetch("https://e-com.incrix.com/Sankamithra%20Products/productData.json")
+    fetch("https://e-com.incrix.com/RKR%20Crackers/productData.json")
       .then((response) => response.json())
       .then((data) => {
         data.sort((a, b) => a.sort_id - b.sort_id);

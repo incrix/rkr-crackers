@@ -30,7 +30,7 @@ export default function ProductPage() {
       localStorage.getItem("productList")
     );
     if (!productFromLocalStorage || productFromLocalStorage.length === 0) {
-      fetch("https://e-com.incrix.com/Sankamithra%20Products/productData.json")
+      fetch("https://e-com.incrix.com/RKR%20Crackers/productData.json")
         .then((response) => response.json())
         .then((data) => {
           localStorage.setItem("productList", JSON.stringify(data));
@@ -150,7 +150,7 @@ export default function ProductPage() {
                         >
                           <Image
                             key={index}
-                            src={`https://e-com.incrix.com/Sankamithra%20Products/${image}`}
+                            src={`https://e-com.incrix.com/RKR%20Crackers/${image}`}
                             alt={product.name}
                             width={800} // provide dimensions
                             height={600}

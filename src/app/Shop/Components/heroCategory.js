@@ -75,7 +75,7 @@ export default function HeroCategory() {
       productFromLocalStorage == null ||
       productFromLocalStorage.length === 0
     ) {
-      fetch("https://e-com.incrix.com/Sankamithra%20Products/productData.json")
+      fetch("https://e-com.incrix.com/RKR%20Crackers/productData.json")
         .then((response) => response.json())
         .then((data) => {
           localStorage.setItem("productList", JSON.stringify(data));
