@@ -42,13 +42,13 @@ a {
 }
 
 ::selection {
-  background-color: var(--secondary);
+  background-color: var(--primary);
   color: #fff;
 }
 
 /* For Firefox */
 ::-moz-selection {
-  background-color: var(--secondary);
+  background-color: var(--primary);
   color: #fff;
 }
 
