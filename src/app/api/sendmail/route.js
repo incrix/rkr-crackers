@@ -1,6 +1,4 @@
 import { sendVerificationMail } from "@/src/utils/sendMail";
-import { pdf } from "@react-pdf/renderer";
-import Template1 from "@/src/utils/invoice/Template1/Template";
 
 export async function POST(request) {
   const { billingDetails, productList, invoice } = await request.json();

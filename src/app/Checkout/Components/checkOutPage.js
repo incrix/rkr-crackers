@@ -347,7 +347,7 @@ function OrderSummary({ setCheckoutState }) {
             pdfStream.on("end", async () => {
               const pdfBuffer = Buffer.concat(chunks);
               const base64String = pdfBuffer.toString("base64");
-              fetch("/api/sendmail", {
+              fetch("/api/sendWhatsAppMeta", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

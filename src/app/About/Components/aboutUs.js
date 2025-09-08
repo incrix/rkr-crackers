@@ -1,13 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Image from "next/image";
 import fourImagePic from "@/public/Images/fourPicGrid.png";
-
+import { useRouter } from "next/navigation";
 export default function AboutUs() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  
+  const handleSubscribe = () => {
+    if (email) {
+      router.push("/Contact");
+    }
+    else {
+      alert("Please enter your email");
+    }
+  };
+
   return (
     <Stack
       direction={{ xs: "column", md: "row" }}
@@ -64,6 +77,9 @@ export default function AboutUs() {
           }}
         >
           <TextField
+            value={email || ""}
+            onChange={(e) => setEmail(e.target.value)}
+            required
             placeholder="Enter your email"
             variant="standard"
             InputProps={{
@@ -79,12 +95,14 @@ export default function AboutUs() {
               flex: 1,
               px: 1,
               "& input": {
-                height: "40px", // keeps input height
-                padding: "0 8px", // aligns placeholder left center
+                height: "40px",
+                padding: "0 8px",
               },
             }}
           />
+
           <Button
+            onClick={handleSubscribe}
             disableElevation
             variant="contained"
             sx={{

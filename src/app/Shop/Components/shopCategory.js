@@ -165,12 +165,14 @@ const CatCard = ({ title, imgURL, url, isSelected }) => {
       sx={{
         background: isSelected ? "#F4F6FA" : "white",
         width: {
-          xs: "120px",
+          xs: "140px",
           sm: "150px",
+          md: "140px",
         },
         height: {
           xs: "150px",
           sm: "180px",
+          md: "160px",
         },
         borderRadius: "10px",
         display: "flex",
