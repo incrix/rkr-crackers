@@ -9,8 +9,8 @@ export default function PdfCartFloating() {
   const router = useRouter();
 
   const handlePdfDownload = async () => {
-    const pdfUrl = "https://e-com.incrix.com/Radhey/RadheyThunders(2025%20Pricelist).pdf";
-    const fileName = "RadheyThunders_2025_Pricelist.pdf";
+    const pdfUrl = "https://e-com.incrix.com/RKR%20Crackers/RKR_Pricelist.pdf";
+    const fileName = "RKR_Pricelist.pdf";
 
     try {
       // Open PDF in a new tab

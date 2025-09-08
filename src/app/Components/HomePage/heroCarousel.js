@@ -15,7 +15,7 @@ export default function HeroCarousel() {
     infinite: true,
     speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1,
+    slidesToScroll: 1,    
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: false,
@@ -24,12 +24,12 @@ export default function HeroCarousel() {
   // Define images based on screen size using provided URLs
   const images = isMobile
     ? [
-        { src: "https://e-com.incrix.com/Radhey/mobileBanner1.png", alt: "Mobile Banner 1" },
-        { src: "https://e-com.incrix.com/Radhey/mobileBanner2.png", alt: "Mobile Banner 2" },
+        { src: "https://e-com.incrix.com/RKR%20Crackers/mobileBanner1.png", alt: "Mobile Banner 1" },
+        { src: "https://e-com.incrix.com/RKR%20Crackers/mobileBanner2.png", alt: "Mobile Banner 2" },
       ]
     : [
-        { src: "https://e-com.incrix.com/Radhey/banner1.png", alt: "Banner 1" },
-        { src: "https://e-com.incrix.com/Radhey/banner2.png", alt: "Banner 2" },
+        { src: "https://e-com.incrix.com/RKR%20Crackers/banner1.png", alt: "Banner 1" },
+        { src: "https://e-com.incrix.com/RKR%20Crackers/banner2.png", alt: "Banner 2" },
       ];
 
   return (
