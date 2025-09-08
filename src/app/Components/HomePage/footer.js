@@ -19,10 +19,10 @@ export default function Footer() {
     window.location.href = "tel: 8838780610";
   };
   const handlePhoneCallTwo = () => {
-    window.location.href = "tel: 344746894";
+    window.location.href = "tel: 9344746894";
   };
   const handlePhoneCallThree = () => {
-    window.location.href = "tel: 8870973131";
+    window.location.href = "tel: 8870973131 ";
   };
 
   const links = [
@@ -91,7 +91,7 @@ export default function Footer() {
             <p>High quality fireworks manufacturer in TamilNadu</p>
             <Stack direction="row" gap={1} alignItems="center">
               <PersonIcon sx={{ color: "var(--secondary)" }} />
-              <p>Aravinth</p>
+              <p>Aravindh Kumaraswamy</p>
             </Stack>
             <Stack direction="row" gap={1} alignItems="center">
               <MailIcon sx={{ color: "var(--secondary)" }} />
@@ -136,7 +136,7 @@ export default function Footer() {
                   whiteSpace: "nowrap",
                 }}
               >
-                +91 3447 46894
+                +91 93447 46894
               </p>
 
               <span>|</span>
@@ -149,7 +149,7 @@ export default function Footer() {
                   whiteSpace: "nowrap",
                 }}
               >
-                +91 8870973131
+                +91  88709 73131 
               </p>
             </Stack>
           </Stack>
