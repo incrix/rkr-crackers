@@ -4,9 +4,26 @@ import Fab from "@mui/material/Fab";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useRouter } from "next/navigation";
+import Badge from "@mui/material/Badge";
+import { useState, useEffect } from "react";
 
 export default function PdfCartFloating() {
   const router = useRouter();
+  const [cartCount, setCartCount] = useState(1);
+  useEffect(() => {
+    setCartCount(
+      localStorage.getItem("cart")
+        ? JSON.parse(localStorage.getItem("cart")).length
+        : 0
+    );
+    setInterval(() => {
+      setCartCount(
+        localStorage.getItem("cart")
+          ? JSON.parse(localStorage.getItem("cart")).length
+          : 0
+      );
+    }, 500);
+  }, []);
 
   const handlePdfDownload = async () => {
     const pdfUrl = "https://e-com.incrix.com/RKR%20Crackers/RKR_Pricelist.pdf";
@@ -43,7 +60,9 @@ export default function PdfCartFloating() {
       window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error("Error downloading PDF:", error);
-      alert("Failed to download the PDF. Please try downloading it manually from the opened tab.");
+      alert(
+        "Failed to download the PDF. Please try downloading it manually from the opened tab."
+      );
     }
   };
 
@@ -107,9 +126,19 @@ export default function PdfCartFloating() {
       <Fab
         aria-label="cart"
         onClick={() => router.push("/Cart")}
-        sx={borderBeamStyle("#c21834", "var(--primary)", "0.3s")} // 🔵 blue glow, staggered float
+        sx={borderBeamStyle("#c21834", "var(--primary)", "0.3s")}
       >
-        <ShoppingCartIcon />
+        <Badge
+          badgeContent={cartCount}
+          sx={{
+            "& .MuiBadge-badge": {
+              backgroundColor: "var(--secondary)",
+              color: "#fff",
+            },
+          }}
+        >
+          <ShoppingCartIcon />
+        </Badge>
       </Fab>
     </Stack>
   );

@@ -77,9 +77,9 @@ export default function Shop() {
     <Stack position="relative" minHeight="100vh">
       <NavBar />
       <Suspense fallback={<Stack>Loading shop...</Stack>}>
-        <AnimatedSection animationType="fadeUp" delay={0.1}>
+        {/* <AnimatedSection animationType="fadeUp" delay={0.1}> */}
           <ShopContent />
-        </AnimatedSection>
+        {/* </AnimatedSection> */}
       </Suspense>
       <Stack mt={{ xs: 10, md: 10 }}>
         <Footer />

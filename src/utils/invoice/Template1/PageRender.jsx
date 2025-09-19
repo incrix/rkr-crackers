@@ -1,6 +1,5 @@
 "use client";
-import { Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
-import Rupee from "@/public/Images/rupee.png";
+import { Page, Text, View } from "@react-pdf/renderer";
 import RenderItems from "./RenderItems";
 import RenderCustomerDetails from "./RenderCustomerDetails";
 import RenderInvoiceHeader from "./RenderInvoiceHeader";
@@ -54,15 +53,10 @@ export default function PageRender({ billingDetails, productList }) {
               }}
             >
               <Text style={{ width: "50%", textAlign: "right" }}>
-                Sub Total : {productList.reduce((a, { price, count }) => a + price * count, 0).toFixed(2)}
+                Sub Total :
               </Text>
               <Text style={{ width: "50%", textAlign: "right" }}>
-                <Image
-                  width={100}
-                  height={100}
-                  src={Rupee.src}
-                  style={{ width: 6, objectFit: "contain", height: "auto" }}
-                />
+                Rs:{" "}
                 {productList
                   .reduce((a, { price, count }) => a + price * count, 0)
                   .toFixed(2)}
@@ -76,15 +70,10 @@ export default function PageRender({ billingDetails, productList }) {
               }}
             >
               <Text style={{ width: "50%", textAlign: "right" }}>
-                Discount : {productList.reduce((a, { discount, price, count }) => a + ((price * discount) / 100) * count, 0).toFixed(2)}
+                Discount :
               </Text>
               <Text style={{ width: "50%", textAlign: "right" }}>
-                <Image
-                  width={100}
-                  height={100}
-                  src={Rupee.src}
-                  style={{ width: 6, objectFit: "contain", height: "auto" }}
-                />
+                Rs:{" "}
                 {productList
                   .reduce(
                     (a, { discount, price, count }) =>
@@ -109,12 +98,8 @@ export default function PageRender({ billingDetails, productList }) {
                 width: "50%",
                 textAlign: "right",
               }}
-            > 
-              Total Amount : {productList.reduce(
-                (a, { price, discount, count }) =>
-                  a + (price - (price * discount) / 100) * count,
-                0
-              )}
+            >
+              Total Amount :
             </Text>
             <Text
               style={{
@@ -124,17 +109,14 @@ export default function PageRender({ billingDetails, productList }) {
                 textAlign: "right",
               }}
             >
-              <Image
-                width={100} 
-                height={100}
-                src={Rupee.src}
-                style={{ width: 8, objectFit: "contain", height: "auto" }}
-              />
-              {productList.reduce(
-                (a, { price, discount, count }) =>
-                  a + (price - (price * discount) / 100) * count,
-                0
-              )}
+              Rs:{" "}
+              {productList
+                .reduce(
+                  (a, { price, discount, count }) =>
+                    a + (price - (price * discount) / 100) * count,
+                  0
+                )
+                .toFixed(2)}
             </Text>
           </View>
         </View>

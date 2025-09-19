@@ -43,7 +43,11 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 export default function Page() {
   const [checkoutState, setCheckoutState] = useState("billing");
-  const [open, setOpen] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
   const [billingDetails, setBillingDetails] = useState({
     name: "",
     email: "",
@@ -62,11 +66,9 @@ export default function Page() {
     );
   };
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
+  const handleCloseSnackbar = (_, reason) => {
+    if (reason === "clickaway") return;
+    setSnackbar({ ...snackbar, open: false });
   };
 
   useEffect(() => {
@@ -81,29 +83,39 @@ export default function Page() {
     localStorage.setItem("billingDetails", JSON.stringify(billingDetails));
   }, [billingDetails]);
 
-  const handleClick = () => {
+  // This function will show the snackbar for the billing form
+  const showBillingError = (message) => {
+    setSnackbar({ open: true, message: message, severity: "error" });
+  };
+
+  // This function will be passed to OrderSummary to show the success snackbar
+  const showOrderSuccess = (message) => {
+    setSnackbar({ open: true, message: message, severity: "success" });
+  };
+
+  const handleNextClick = () => {
     if (
-      billingDetails.name == "" ||
-      billingDetails.email == "" ||
-      billingDetails.phone == "" ||
-      billingDetails.address == "" ||
-      billingDetails.city == "" ||
-      billingDetails.state == "" ||
-      billingDetails.zip == ""
+      !billingDetails.name ||
+      !billingDetails.email ||
+      !billingDetails.phone ||
+      !billingDetails.address ||
+      !billingDetails.city ||
+      !billingDetails.state ||
+      !billingDetails.zip
     ) {
-      setOpen(true);
+      showBillingError("Please fill all the fields");
       return;
     }
-    if (billingDetails.phone.length != 10) {
-      setOpen(true);
+    if (billingDetails.phone.length !== 10) {
+      showBillingError("Please enter a valid phone number");
       return;
     }
-    if (billingDetails.zip.length != 6) {
-      setOpen(true);
+    if (billingDetails.zip.length !== 6) {
+      showBillingError("Please enter a valid zip code");
       return;
     }
-    if (billingDetails.email.indexOf("@") == -1) {
-      setOpen(true);
+    if (billingDetails.email.indexOf("@") === -1) {
+      showBillingError("Please enter a valid email");
       return;
     }
     setCheckoutState("order");
@@ -120,17 +132,17 @@ export default function Page() {
     >
       <Snackbar
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
+        open={snackbar.open}
         autoHideDuration={6000}
-        onClose={handleClose}
+        onClose={handleCloseSnackbar}
       >
         <Alert
-          onClose={handleClose}
-          severity="error"
+          onClose={handleCloseSnackbar}
+          severity={snackbar.severity}
           variant="filled"
           sx={{ width: "100%" }}
         >
-          Fill the details!
+          {snackbar.message}
         </Alert>
       </Snackbar>
       <Stack
@@ -153,51 +165,91 @@ export default function Page() {
         <StepIndicator checkoutState={checkoutState} />
         {checkoutState == "billing" && (
           <BillingDetails
-            handleClick={handleClick}
+            handleClick={handleNextClick}
             billingDetails={billingDetails}
             onBillingDetailsChange={onBillingDetailsChange}
           />
         )}
         {checkoutState == "order" && (
-          <OrderSummary setCheckoutState={setCheckoutState} />
+          <OrderSummary
+            setCheckoutState={setCheckoutState}
+            showOrderSuccess={showOrderSuccess}
+            showError={showBillingError}
+          />
         )}
       </Stack>
     </Stack>
   );
 }
 
-function OrderSummary({ setCheckoutState }) {
+function OrderSummary({ setCheckoutState, showOrderSuccess, showError }) {
   const [cart, setCart] = useState([]);
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
+
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
 
+  const totalAmount = cart.reduce(
+    (acc, item) =>
+      acc +
+      Math.round(
+        (item.price - (item.price * item.discount) / 100) * item.count
+      ),
+    0
+  );
+
+  const handlePlaceOrder = async () => {
+    // Check if the total amount is above 3000
+    if (totalAmount <= 3000) {
+      showError("The total amount must be above ₹3000 to place an order.");
+      return; // Stop the function if the condition is not met
+    }
+
+    setLoading(true);
+
+    const pdfStream = await pdf(
+      <Template1
+        billingDetails={JSON.parse(localStorage.getItem("billingDetails"))}
+        productList={cart}
+      />
+    ).toBuffer();
+
+    const chunks = [];
+    pdfStream.on("data", (chunk) => chunks.push(chunk));
+    pdfStream.on("end", async () => {
+      const pdfBuffer = Buffer.concat(chunks);
+      const base64String = pdfBuffer.toString("base64");
+
+      fetch("/api/sendmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          billingDetails: JSON.parse(localStorage.getItem("billingDetails")),
+          productList: cart,
+          invoice: base64String,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "success") {
+            showOrderSuccess("Order placed successfully 🎉");
+            localStorage.removeItem("cart");
+            localStorage.removeItem("billingDetails");
+            setCheckoutState("billing");
+          } else {
+            showError("Failed to place order. Please try again.");
+          }
+        })
+        .catch(() => {
+          showError("An error occurred. Please check your connection.");
+        })
+        .finally(() => setLoading(false));
+    });
+  };
+
   return (
     <Stack gap={2}>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
-        // autoHideDuration={6000}
-        onClose={handleClose}
-      >
-        <Alert
-          onClose={handleClose}
-          severity="success"
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {alertMessage}
-        </Alert>
-      </Snackbar>
       <Button
         variant="text"
         sx={{
@@ -332,47 +384,7 @@ function OrderSummary({ setCheckoutState }) {
             },
             textTransform: "none",
           }}
-          onClick={async () => {
-            setLoading(true);
-            const pdfStream = await pdf(
-              <Template1
-                billingDetails={JSON.parse(
-                  localStorage.getItem("billingDetails")
-                )}
-                productList={cart}
-              />
-            ).toBuffer();
-            const chunks = [];
-            pdfStream.on("data", (chunk) => chunks.push(chunk));
-            pdfStream.on("end", async () => {
-              const pdfBuffer = Buffer.concat(chunks);
-              const base64String = pdfBuffer.toString("base64");
-              fetch("/api/sendWhatsAppMeta", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  billingDetails: JSON.parse(
-                    localStorage.getItem("billingDetails")
-                  ),
-                  productList: cart,
-                  invoice: base64String,
-                }),
-              })
-                .then((res) => res.json())
-                .then((data) => {
-                  if (data.status == "success") {
-                    setAlertMessage("Order placed successfully");
-                    setOpen(true);
-                    localStorage.setItem("cart", JSON.stringify([]));
-                    setCart([]);
-                    setCheckoutState("billing");
-                    setLoading(false);
-                  }
-                });
-            });
-          }}
+          onClick={handlePlaceOrder}
         >
           Place Order
         </LoadingButton>
@@ -601,7 +613,7 @@ function BillingDetails({
       </Stack>
       <Stack>
         <Button
-        disableElevation
+          disableElevation
           variant="contained"
           sx={{
             backgroundColor: "var(--primary)",

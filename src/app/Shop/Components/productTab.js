@@ -2,40 +2,31 @@
 import Stack from "@mui/material/Stack";
 import ProductCard from "@/src/app/Shop/Components/productCard";
 import { useEffect, useState } from "react";
+import { useProducts } from "@/src/app/context/ProductContext";
 
 export default function ProductTab({ category }) {
-  const [productList, setProductList] = useState([]);
+  const { productList, loading } = useProducts();
   const [filteredProductList, setFilteredProductList] = useState([]);
 
-  // 🔹 1. Fetch data only once
   useEffect(() => {
-    fetch("https://e-com.incrix.com/RKR%20Crackers/productData.json")
-      .then((response) => response.json())
-      .then((data) => {
-        data.sort((a, b) => a.sort_id - b.sort_id);
-        localStorage.setItem("productList", JSON.stringify(data));
-        setProductList(data);
-      });
-  }, []); // ✅ only runs once
-
-  // 🔹 2. Filter when category OR productList changes
-  useEffect(() => {
-    if (category) {
+    if (!loading) {
       setFilteredProductList(
-        productList.filter((product) =>
-          category === "Atom bombs"
-            ? product.category === "Atom bombs" ||
-              product.category === "Bijili crackers"
-            : category === "Twinklers"
-            ? product.category === "Twinkling stars" ||
-              product.category === "Pencils"
-            : product.category === category
-        )
+        category
+          ? productList.filter((product) =>
+              category === "Atom bombs"
+                ? product.category === "Atom bombs" ||
+                  product.category === "Bijili crackers"
+                : category === "Twinklers"
+                ? product.category === "Twinkling stars" ||
+                  product.category === "Pencils"
+                : product.category === category
+            )
+          : productList
       );
-    } else {
-      setFilteredProductList(productList);
     }
-  }, [category, productList]); // ✅ correct dependencies
+  }, [category, productList, loading]);
+
+  if (loading) return <p>Loading products...</p>;
 
   return (
     <Stack
