@@ -448,6 +448,7 @@ export default function ProductPage() {
           </Stack>
         </Stack>
       </Stack>
+      <PdfCartFloating />
       <Footer />
     </Stack>
   );
