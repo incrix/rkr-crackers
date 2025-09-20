@@ -68,6 +68,16 @@ export default function CartPage() {
     localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
+  // 1. Calculate the total amount and store it in a constant
+  const totalAmount = cart.reduce(
+    (acc, item) =>
+      acc +
+      Math.round(
+        (item.price - (item.price * item.discount) / 100) * item.count
+      ),
+    0
+  );
+
   return (
     <Stack
       sx={{
@@ -96,9 +106,6 @@ export default function CartPage() {
           >
             Your Cart
           </Typography>
-          {/* <Typography className={quicksand.className} fontSize={14}>
-            There are no items in your cart.
-          </Typography> */}
         </Stack>
         <Stack
           direction={{
@@ -249,38 +256,32 @@ export default function CartPage() {
                 >
                   Cart Summary
                 </Typography>
-                <Stack gap={2}>
-                  {/* <Typography className={quicksand.className} fontSize={14}>
-                    Subtotal: ₹
-                    {cart.reduce(
-                      (acc, item) =>
-                        acc +
-                        Math.round(
-                          item.price - (item.price * item.discount) / 100
-                        ) *
-                          item.count,
-                      0
-                    )}
-                  </Typography> */}
-                  {/* <Typography className={quicksand.className} fontSize={14}>
-                    Shipping: $0.00
-                  </Typography> */}
+                <Stack gap={1}>
                   <Typography
                     className={quicksand.className}
                     fontSize={14}
                     fontWeight={700}
                   >
-                    Total: ₹
-                    {cart.reduce(
-                      (acc, item) =>
-                        acc +
-                        Math.round(
-                          item.price - (item.price * item.discount) / 100
-                        ) *
-                          item.count,
-                      0
-                    )}
+                    Total: ₹{totalAmount}
                   </Typography>
+
+                  {/* 2. Add a conditional message (flag) */}
+                  {totalAmount > 0 && totalAmount <= 3000 && (
+                    <Typography
+                      className={quicksand.className}
+                      fontSize={13}
+                      color="error"
+                      textAlign="center"
+                      sx={{
+                        p: 1,
+                        border: "1px solid #d32f2f",
+                        borderRadius: "4px",
+                        bgcolor: "#ffebee",
+                      }}
+                    >
+                      Order total must be above ₹3000 to checkout.
+                    </Typography>
+                  )}
                 </Stack>
                 <Stack gap={2}>
                   <Button
@@ -293,15 +294,26 @@ export default function CartPage() {
                       "&:hover": {
                         backgroundColor: "var(--primary)",
                       },
+                      // Make the button look disabled
+                      "&.Mui-disabled": {
+                        backgroundColor: "rgba(0, 0, 0, 0.12)",
+                        color: "rgba(0, 0, 0, 0.26)",
+                      },
                     }}
-                    disabled={cart.length === 0}
+                    // 3. Update the disabled condition
+                    disabled={totalAmount <= 3000}
                   >
                     <Link
                       style={{
                         textDecoration: "none",
-                        color: "white",
+                        color: "inherit", // Inherit color from the parent Button
+                        width: "100%",
                       }}
                       href="/Checkout"
+                      // Prevent clicking the Link when the button is disabled
+                      onClick={(e) => {
+                        if (totalAmount <= 3000) e.preventDefault();
+                      }}
                     >
                       Proceed to Checkout
                     </Link>

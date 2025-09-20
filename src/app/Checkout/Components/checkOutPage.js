@@ -21,6 +21,7 @@ import { pdf } from "@react-pdf/renderer";
 import Template1 from "@/src/utils/invoice/Template1/Template";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { launchFireworks } from "@/src/app/Components/Confetti/confetti";
+import { useRouter } from "next/navigation";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -186,7 +187,7 @@ export default function Page() {
 function OrderSummary({ setCheckoutState, showOrderSuccess, showError }) {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const router = useRouter();
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
@@ -203,6 +204,7 @@ function OrderSummary({ setCheckoutState, showOrderSuccess, showError }) {
   const handlePlaceOrder = async () => {
     if (totalAmount <= 3000) {
       showError("The total amount must be above ₹3000 to place an order.");
+      return;
     }
 
     setLoading(true);
@@ -237,6 +239,7 @@ function OrderSummary({ setCheckoutState, showOrderSuccess, showError }) {
             localStorage.removeItem("cart");
             localStorage.removeItem("billingDetails");
             setCheckoutState("billing");
+            router.push("/Shop");
           } else {
             showError("Failed to place order. Please try again.");
           }
