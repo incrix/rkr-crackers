@@ -20,6 +20,7 @@ import ArrowBackIosNewRoundedIcon from "@mui/icons-material/ArrowBackIosNewRound
 import { pdf } from "@react-pdf/renderer";
 import Template1 from "@/src/utils/invoice/Template1/Template";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { launchFireworks } from "@/src/app/Components/Confetti/confetti";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -200,10 +201,8 @@ function OrderSummary({ setCheckoutState, showOrderSuccess, showError }) {
   );
 
   const handlePlaceOrder = async () => {
-    // Check if the total amount is above 3000
     if (totalAmount <= 3000) {
       showError("The total amount must be above ₹3000 to place an order.");
-      return; // Stop the function if the condition is not met
     }
 
     setLoading(true);
@@ -234,6 +233,7 @@ function OrderSummary({ setCheckoutState, showOrderSuccess, showError }) {
         .then((data) => {
           if (data.status === "success") {
             showOrderSuccess("Order placed successfully 🎉");
+            launchFireworks();
             localStorage.removeItem("cart");
             localStorage.removeItem("billingDetails");
             setCheckoutState("billing");
