@@ -12,15 +12,7 @@ export default function ProductTab({ category }) {
     if (!loading) {
       setFilteredProductList(
         category
-          ? productList.filter((product) =>
-              category === "Atom bombs"
-                ? product.category === "Atom bombs" ||
-                  product.category === "Bijili crackers"
-                : category === "Twinklers"
-                ? product.category === "Twinkling stars" ||
-                  product.category === "Pencils"
-                : product.category === category
-            )
+          ? productList.filter((product) => product.category === category)
           : productList
       );
     }
@@ -45,11 +37,7 @@ export default function ProductTab({ category }) {
           marginLeft: "10px",
         }}
       >
-        {category
-          ? category === "Atom bombs"
-            ? "Atom bombs & Bijili"
-            : category
-          : "Our Products"}
+        {category ? category : "Our Products"}
       </h4>
       <Stack
         width={"100%"}

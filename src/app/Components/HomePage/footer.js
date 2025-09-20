@@ -1,6 +1,6 @@
 "use client";
 import Stack from "@mui/material/Stack";
-import Image from "next/image"; // ✅ import Next.js Image
+import Image from "next/image";
 import logo from "@/public/Images/rkrLogo.png";
 import green from "@/public/Images/green.png";
 import iso from "@/public/Images/iso.png";
@@ -31,6 +31,25 @@ export default function Footer() {
     { label: "Shop", href: "/Shop" },
     { label: "Contact Us", href: "/Contact" },
   ];
+
+  // Updated category links based on ProductData.json
+  const categoryLinks = [
+    { label: "Flower Pots", href: "/Shop?category=Flower%20Pots#product" },
+    { label: "Chakkar items", href: "/Shop?category=Chakkar%20items#product" },
+    {
+      label: "Single Shot Crackers",
+      href: "/Shop?category=Single%20Shot%20Crackers#product",
+    },
+    { label: "Rockets", href: "/Shop?category=Rockets#product" },
+    { label: "Multi Shots", href: "/Shop?category=Multi%20Shots#product" },
+    { label: "Atom Bomb", href: "/Shop?category=Atom%20Bomb#product" },
+    {
+      label: "Colour Sparklers",
+      href: "/Shop?category=Colour%20Sparklers#product",
+    },
+    { label: "New Arrivals", href: "/Shop?category=New%20Arrivals#product" },
+  ];
+
   return (
     <Stack
       p={{ xs: 2, md: 4 }}
@@ -60,7 +79,7 @@ export default function Footer() {
             <Stack direction="row" gap={1} alignItems="center">
               <Image
                 src={logo.src}
-                alt="RKR Fireworks Logo" // ✅ alt text added
+                alt="RKR Fireworks Logo"
                 width={80}
                 height={80}
                 priority
@@ -184,18 +203,16 @@ export default function Footer() {
                   href={link.href}
                   style={{
                     color: isActive ? "var(--primary)" : "var(--text-color)",
-                    textDecoration: isActive ? "underline" : "none",
+                    textDecoration: "none",
                     fontWeight: isActive ? "600" : "400",
                     transition: "all 0.2s ease-in-out",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = "var(--primary)";
-                    e.currentTarget.style.textDecoration = "underline";
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) {
                       e.currentTarget.style.color = "var(--text-color)";
-                      e.currentTarget.style.textDecoration = "none";
                     }
                   }}
                 >
@@ -216,20 +233,25 @@ export default function Footer() {
             >
               Categories
             </Typography>
-            <Link href={"/Shop?category=Flower%20Pots#product"}>
-              Flowerpots
-            </Link>
-            <Link href={"/Shop?category=Ground%20Chakkars#product"}>
-              Ground Chakkar
-            </Link>
-            <Link href={"/Shop?category=One%20Sound#product"}>One Sound</Link>
-            <Link href={"/Shop?category=Special%27s#product"}>Special’s</Link>
-            <Link href={"/Shop?category=Rockets#product"}>Rocket</Link>
-            <Link href={"/Shop?category=Repeating%20shots#product"}>
-              Aerials
-            </Link>
-            <Link href={"/Shop?category=Atom%20bombs#product"}>Bombs</Link>
-            <Link href={"/Shop?category=Twinklers#product"}>Twinklers</Link>
+            {categoryLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                style={{
+                  color: "var(--text-color)",
+                  textDecoration: "none",
+                  transition: "all 0.2s ease-in-out",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "var(--primary)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--text-color)";
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
           </Stack>
 
           {/* Certifications */}
