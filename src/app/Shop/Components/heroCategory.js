@@ -8,6 +8,7 @@ import rocket from "@/public/Images/rocket.png";
 import sound from "@/public/Images/sound.png";
 import special from "@/public/Images/special.png";
 import bomb from "@/public/Images/bomb.png";
+import twinkle from "@/public/Images/twinkle.png"; // Added twinkle icon import
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useProducts } from "@/src/app/context/ProductContext";
@@ -29,13 +30,12 @@ const CatButton = ({ title, img, count, link }) => {
         backgroundColor: "var(--primary)",
         "&:hover": {
           backgroundColor: "var(--primary)",
-          // borderColor: "var(--secondary)",
           cursor: "pointer",
           opacity: 0.9,
         },
       }}
       onClick={() => {
-        router.push(`/Shop?category=${link}`);
+        router.push(`/Shop?category=${link}#product`);
       }}
     >
       <Image
@@ -67,7 +67,28 @@ const CatButton = ({ title, img, count, link }) => {
 export default function HeroCategory() {
   const { productList = [], loading } = useProducts();
 
+  // Dynamic category list based on new product data
+  const categories = [
+    { title: "Single Shot Crackers", img: sound },
+    { title: "Chakkar items", img: chakkar },
+    { title: "Flower Pots", img: flower },
+    { title: "Candles & Twinkling Star", img: twinkle },
+    { title: "Atom Bomb", img: bomb },
+    { title: "Kids Crackers", img: special },
+    { title: "Rockets", img: rocket },
+    { title: "Fancy Novelties", img: special },
+    { title: "Fancy Fountains", img: flower },
+    { title: "Multi Shots", img: aerial },
+    { title: "Colour Sparklers", img: twinkle },
+    { title: "New Arrivals", img: special },
+    { title: "Adiyal/Paper Bomb", img: bomb },
+    { title: "Crackers", img: sound },
+    { title: "Deluxe Crackers", img: sound },
+    { title: "Matches", img: special },
+  ];
+
   if (loading) return <p>Loading categories...</p>;
+
   return (
     <Paper
       elevation={0}
@@ -103,87 +124,18 @@ export default function HeroCategory() {
           }}
         />
         <Stack gap={2.5}>
-          <CatButton
-            title="Flower Pots"
-            count={
-              productList.filter(
-                (product) => product.category === "Flower Pots"
-              ).length
-            }
-            img={flower}
-            link={"Flower Pots"}
-          />
-          <CatButton
-            title="Ground Chakkars"
-            count={
-              productList.filter(
-                (product) => product.category === "Ground Chakkars"
-              ).length
-            }
-            img={chakkar}
-            link={"Ground Chakkars"}
-          />
-          <CatButton
-            title="One Sound"
-            count={
-              productList.filter((product) => product.category === "One Sound")
-                .length
-            }
-            img={sound}
-            link={"One Sound"}
-          />
-          <CatButton
-            title="Special’s"
-            count={
-              productList.filter((product) => product.category == "Special's")
-                .length
-            }
-            img={special}
-            link={"Special%27s"}
-          />
-          <CatButton
-            title="Rockets"
-            count={
-              productList.filter((product) => product.category == "Rockets")
-                .length
-            }
-            img={rocket}
-            link={"Rockets"}
-          />
-          <CatButton
-            title="Aerials"
-            count={
-              productList.filter(
-                (product) => product.category == "Repeating shots"
-              ).length
-            }
-            img={aerial}
-            link={"Repeating shots"}
-          />
-          <CatButton
-            title="Bombs"
-            count={
-              productList.filter((product) => product.category == "Atom bombs")
-                .length +
-              productList.filter(
-                (product) => product.category == "Bijili crackers"
-              ).length
-            }
-            img={bomb}
-            link={"Atom bombs"}
-          />
-          <CatButton
-            title="Twinklers"
-            count={
-              productList.filter(
-                (product) => product.category == "Twinkling stars"
-              ).length +
-              productList.filter((product) => product.category == "Pencils")
-                .length
-            }
-            img={aerial}
-            link={"Twinklers"}
-          />
+          {categories.map((cat) => (
+            <CatButton
+              key={cat.title}
+              title={cat.title}
+              img={cat.img}
+              link={encodeURIComponent(cat.title)}
+              count={
+                productList.filter((product) => product.category === cat.title)
+                  .length
+              }
+            />
+          ))}
         </Stack>
       </Stack>
     </Paper>
