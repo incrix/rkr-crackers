@@ -3,8 +3,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Image from "next/image";
-import SparkOne from "@/public/Images/SparkOne.svg";
-import SparkTwo from "@/public/Images/SparkTwo.svg";
+import SparkOne from "@/public/Images/sparkOne.png";
+import SparkTwo from "@/public/Images/sparkTwo.png";
 import CircleIcon from "@mui/icons-material/Circle";
 import { useRouter } from "next/navigation";
 
