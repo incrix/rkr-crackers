@@ -50,7 +50,7 @@ export default function RenderInvoiceHeader() {
               maxWidth: 200,
             }}
           >
-            Email: rkrcrackers@gmail.com
+            Email: sreechitraagencymaraneri@gmail.com
           </Text>
         </View>
         <Text

@@ -115,14 +115,14 @@ export default function Footer() {
             <Stack direction="row" gap={1} alignItems="center">
               <MailIcon sx={{ color: "var(--secondary)" }} />
               <a
-                href="mailto:rkrcrackers@gmail.com"
+                href="mailto:sreechitraagencymaraneri@gmail.com"
                 style={{
                   textDecoration: "none",
                   color: "inherit",
                   cursor: "pointer",
                 }}
               >
-                rkrcrackers@gmail.com
+                sreechitraagencymaraneri@gmail.com
               </a>
             </Stack>
 

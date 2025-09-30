@@ -113,7 +113,7 @@ function AddressComponent() {
             >
               Email:{" "}
               <span style={{ cursor: "pointer" }}>
-                rkrcrackers@gmail.com
+              sreechitraagencymaraneri@gmail.com
               </span>
             </Typography>
             <Typography
