@@ -51,10 +51,10 @@ export default function ShopByCategory() {
     },
     {
       id: 4,
-      title: "Candles & Twinkling Star",
+      title: "Candles",
       imgURL: twinkle.src,
       url: "Candles",
-      query: "Candles & Twinkling Star",
+      query: "Candles",
     },
     {
       id: 5,
